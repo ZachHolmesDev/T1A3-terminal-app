@@ -1,0 +1,83 @@
+
+[{
+    "location": {
+        "name": "Brisbane",
+        "region": "Queensland",
+        "country": "Australia",
+        "lat": -27.5,
+        "lon": 153.02,
+        "tz_id": "Australia/Brisbane",
+        "localtime_epoch": 1682334239,
+        "localtime": "2023-04-24 21:03"
+    },
+    "current": {
+        "last_updated_epoch": 1682334000,
+        "last_updated": "2023-04-24 21:00",
+        "temp_c": 19.0,
+        "temp_f": 66.2,
+        "is_day": 0,
+        "condition": {
+            "text": "Overcast",
+            "icon": "//cdn.weatherapi.com/weather/64x64/night/122.png",
+            "code": 1009
+        },
+        "wind_mph": 6.9,
+        "wind_kph": 11.2,
+        "wind_degree": 160,
+        "wind_dir": "SSE",
+        "pressure_mb": 1026.0,
+        "pressure_in": 30.3,
+        "precip_mm": 0.1,
+        "precip_in": 0.0,
+        "humidity": 88,
+        "cloud": 75,
+        "feelslike_c": 19.0,
+        "feelslike_f": 66.2,
+        "vis_km": 10.0,
+        "vis_miles": 6.0,
+        "uv": 1.0,
+        "gust_mph": 14.1,
+        "gust_kph": 22.7
+    }
+},
+{
+    "location": {
+        "name": "Sydney",
+        "region": "New South Wales",
+        "country": "Australia",
+        "lat": -33.88,
+        "lon": 151.22,
+        "tz_id": "Australia/Sydney",
+        "localtime_epoch": 1682335013,
+        "localtime": "2023-04-24 21:16"
+    },
+    "current": {
+        "last_updated_epoch": 1682334000,
+        "last_updated": "2023-04-24 21:00",
+        "temp_c": 18.0,
+        "temp_f": 64.4,
+        "is_day": 0,
+        "condition": {
+            "text": "Light rain",
+            "icon": "//cdn.weatherapi.com/weather/64x64/night/296.png",
+            "code": 1183
+        },
+        "wind_mph": 4.3,
+        "wind_kph": 6.8,
+        "wind_degree": 310,
+        "wind_dir": "NW",
+        "pressure_mb": 1032.0,
+        "pressure_in": 30.47,
+        "precip_mm": 0.0,
+        "precip_in": 0.0,
+        "humidity": 88,
+        "cloud": 50,
+        "feelslike_c": 18.0,
+        "feelslike_f": 64.4,
+        "vis_km": 10.0,
+        "vis_miles": 6.0,
+        "uv": 1.0,
+        "gust_mph": 11.0,
+        "gust_kph": 17.6
+    }
+}]
