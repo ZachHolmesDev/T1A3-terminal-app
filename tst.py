@@ -1,9 +1,12 @@
 import requests
+# import os 
 
 api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
-# Ui and menu functions
+
+# Ui functions
 # --------------------------
 def print_ui(selected_city, current_weather_response):
+    # os.system('cls' if os.name == 'nt' else 'clear')
     print_menu(selected_city)
     if current_weather_response != None:
         print_current_weather(current_weather_response)
@@ -29,7 +32,8 @@ def print_current_weather(current_weather_response):
     print("-----------------------------------------------")
     
     
-
+# menu functions
+# --------------------------
 def menu():
     selected_city = None
     current_weather_response = None
@@ -54,7 +58,6 @@ def menu():
                 continue
             case '1':
                 current_weather_response = get_current_weather_wapi(selected_city)
-                # print_current_weather(response)
                 continue
             case "q":
                 break
@@ -70,10 +73,6 @@ def get_current_weather_wapi(selected_city):
     # file.write(response.text)
     # file.close()
     return current_weather_response
-    # print(response.json()['location']['name'])
-    # print(response.json()['current']['condition']['text'])
-    # print('temp_c =' , response.json()['current']['temp_c'])
-    # print('feelslike_c =' , response.json()['current']['feelslike_c'])
 
 # def get_current_weather_tmrio():
 #     loc = input("Give City Name: ")
