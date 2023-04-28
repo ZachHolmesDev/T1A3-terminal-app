@@ -4,6 +4,11 @@ api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 # Ui and menu functions
 # --------------------------
 def print_ui(selected_city, current_weather_response):
+    print_menu(selected_city)
+    if current_weather_response != None:
+        print_current_weather(current_weather_response)
+
+def print_menu(selected_city,):
     print("================================================")
     print("---Welcome to the the dvd surround sound test---")
     print("[0] Select City ")
@@ -14,11 +19,9 @@ def print_ui(selected_city, current_weather_response):
     print("[q] Quit")
     print(f"Selected City: ", {selected_city})
     print("================================================")
-    if current_weather_response != None:
-        print_current_weather(current_weather_response)
+
     
 def print_current_weather(current_weather_response):
-    print("")
     print("---",current_weather_response.json()['location']['name'],"--------------------------")
     print(current_weather_response.json()['current']['condition']['text'])
     print('temp_c =' , current_weather_response.json()['current']['temp_c'])
@@ -45,6 +48,8 @@ def menu():
         match num:
             case "0":
                 selected_city = input("Give New City Name: ")
+                if selected_city == "q":
+                    break
                 current_weather_response = None
                 continue
             case '1':
