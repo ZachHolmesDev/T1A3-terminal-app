@@ -13,7 +13,7 @@ def print_ui(selected_city, current_weather_response):
 
 def print_menu(selected_city,):
     print("================================================")
-    print("---Welcome to the the dvd surround sound test---")
+    print("---Welcome to T1A3 Weather CLI---")
     print("[s] Select City ")
     print("[1] Get current weather for Selected City ")
     print("[2] Display forecast for Selected City")
