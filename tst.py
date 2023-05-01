@@ -5,18 +5,18 @@ api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 
 # Ui functions
 # --------------------------
-def print_ui(selected_city, current_weather_response):
+def print_ui(selected_city, current_weather_response, option):
     # os.system('cls' if os.name == 'nt' else 'clear')
     print_menu(selected_city)
-    if current_weather_response != None:
+    if option == '1':
         print_current_weather(current_weather_response)
 
 def print_menu(selected_city,):
     print("================================================")
     print("---Welcome to T1A3 Weather CLI---")
     print("[s] Select City ")
-    print("[1] Get current weather for Selected City ")
-    print("[2] Display forecast for Selected City")
+    print("[1] Get current weather  for Selected City ")
+    print("[2] Display forecast     for Selected City ")
     print("[3] **Get Historical Data")
     print("[4] **Export something???")
     print("[q] Quit")
@@ -25,7 +25,7 @@ def print_menu(selected_city,):
 
     
 def print_current_weather(current_weather_response):
-    print("Current weather for: ",current_weather_response.json()['location']['name'],)
+    print("Current weather for:   ",current_weather_response.json()['location']['name'],)
     print('last_updated          =', current_weather_response.json()['current']['last_updated'])
     print('localtime             =', current_weather_response.json()['location']['localtime'])
     print('current condition     =',current_weather_response.json()['current']['condition']['text'])
@@ -60,9 +60,10 @@ def menu():
     selected_city = "Brisbane"
     current_weather_response = None
     forecast_response = None 
+    option = None 
 
     # info = None
-    print_ui(selected_city, current_weather_response)
+    print_ui(selected_city, current_weather_response, option)
     
     if selected_city == None:
         print("No City selected")
@@ -73,11 +74,11 @@ def menu():
          return
      
     while True:
-        print_ui(selected_city, current_weather_response)
-        num = input("Enter otion number here: ")
+        print_ui(selected_city, current_weather_response, option)
+        option = input("Enter otion number here: ")
         print("")
         print("")
-        match num:
+        match option:
             case "s":
                 selected_city = input("Give New City Name: ")
                 if selected_city == "q":
@@ -96,7 +97,10 @@ def menu():
             case "q":
                 break
             # case 3:
-
+            
+    print('thanks for using T1A3 Weather CLI')
+    print('PROGRAM EXIT')
+    
 # get functions
 # ------------------------------
 def get_current_weather_wapi(selected_city):
