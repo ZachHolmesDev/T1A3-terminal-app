@@ -1,22 +1,29 @@
 import requests
-# import os 
+import os 
 
 api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 
 # Ui functions
 # --------------------------
-def print_ui(selected_city, current_weather_response, option):
-    # os.system('cls' if os.name == 'nt' else 'clear')
+def print_ui(selected_city, current_weather_response, forcast_response, option, error_text):
+    os.system('cls' if os.name == 'nt' else 'clear')
+        
     print_menu(selected_city)
     if option == '1':
         print_current_weather(current_weather_response)
+    
+    if option == '2':
+        print_forecast(forcast_response)
+    
+    if error_text != "":
+        print(error_text)
 
 def print_menu(selected_city,):
     print("================================================")
     print("---Welcome to T1A3 Weather CLI---")
     print("[s] Select City ")
-    print("[1] Get current weather  for Selected City ")
-    print("[2] Display forecast     for Selected City ")
+    print("[1] Get current weather            for Selected City ")
+    print("[2] Display current day forecast   for Selected City ")
     print("[3] **Get Historical Data")
     print("[4] **Export something???")
     print("[q] Quit")
@@ -45,12 +52,28 @@ def print_current_weather(current_weather_response):
     print('')
     print('Wind')
     print('wind kph              =' , current_weather_response.json()['current']['wind_kph'])
+    print('gust kph              =' , current_weather_response.json()['current']['gust_kph'])
     print('wind dir              =' , current_weather_response.json()['current']['wind_dir'])
     print('wind degree           =' , current_weather_response.json()['current']['wind_degree'])
-    print('gust kph              =' , current_weather_response.json()['current']['gust_kph'])
     # print('' , current_weather_response.json()['current'][''])
     # print('' , current_weather_response.json()['current'][''])
     # print('' , current_weather_response.json()['current'][''])
+    print("-----------------------------------------------")
+
+def print_forecast(forcast_response):
+    print('Forecast for:          =' , forcast_response.json()['location']['name'])
+    print('condition              =' , forcast_response.json()['forecast']['forecastday'][0]['day']['condition']['text'])
+    print('maxtemp_c              =' , forcast_response.json()['forecast']['forecastday'][0]['day']['maxtemp_c'])
+    print('mintemp_c              =' , forcast_response.json()['forecast']['forecastday'][0]['day']['mintemp_c'])
+    print('avgtemp_c              =' , forcast_response.json()['forecast']['forecastday'][0]['day']['avgtemp_c'])
+    print('chance_of_rain         =' , forcast_response.json()['forecast']['forecastday'][0]['day']['daily_chance_of_rain'])
+    print('chance_of_snow         =' , forcast_response.json()['forecast']['forecastday'][0]['day']['daily_chance_of_snow'])
+    print('avghumidity            =' , forcast_response.json()['forecast']['forecastday'][0]['day']['avghumidity'])
+    # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''])
+    # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''])
+    # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''][''])
+    # print('              =' , forcast_response.json()[''][''][''][''][''])
+    # print('              =' , forcast_response.json()[''][''])
     print("-----------------------------------------------")
     
     
@@ -61,9 +84,10 @@ def menu():
     current_weather_response = None
     forecast_response = None 
     option = None 
+    error_text = ""
 
     # info = None
-    print_ui(selected_city, current_weather_response, option)
+    print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
     
     if selected_city == None:
         print("No City selected")
@@ -74,15 +98,23 @@ def menu():
          return
      
     while True:
-        print_ui(selected_city, current_weather_response, option)
-        option = input("Enter otion number here: ")
+        print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
+        error_text = ""
+        option = input("Enter option number here: ")
         print("")
         print("")
         match option:
             case "s":
-                selected_city = input("Give New City Name: ")
+                new_city = input("Give New City Name: ")
+                city_is_valid = check_loc_valid(new_city)
+
                 if selected_city == "q":
                     break
+                elif city_is_valid:
+                    selected_city = new_city
+                else:
+                    error_text = f"City name '{new_city}' is invalid. Please try again."
+                
                 current_weather_response = None 
                 forecast_response = None 
                 continue
@@ -110,6 +142,22 @@ def get_current_weather_wapi(selected_city):
 def get_forecast_wapi(selected_city):
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/forecast.json?q={selected_city}&key={api_key_wapi_caleb}")
     return forecast_response
+
+def check_loc_valid(selected_city):
+        loc_check = requests.get(f"http://api.weatherapi.com/v1/current.json?q={selected_city}&key={api_key_wapi_caleb}")
+        write_response(loc_check)
+        try:
+            loc_check.json()['error']
+        except:
+            return True
+
+        return False
+
+
+        # if hasattr(loc_check.json(), 'error'):
+        #     return False
+        # else: 
+        #     return True
 
 # def get_current_weather_tmrio(selected_city):
 #     selected_city = requests.get(f"https://api.tomorrow.io/v4/weather/forecast?location={selected_city}&apikey=1xKR2c5vCp2WQO6ci3o6FljhPuTkB2GP")
