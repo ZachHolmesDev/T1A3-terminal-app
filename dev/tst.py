@@ -113,11 +113,10 @@ def main():
         print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
         error_text = None
         option = input("Enter option number here: ")
-        print("")
-        print("")
+        print('')
         match option:
             case "s":
-                selected_city = select_new_city(selected_city,)
+                selected_city = select_new_city()
                 if selected_city == 'q':
                     return
                 continue
@@ -176,8 +175,9 @@ def check_loc_valid(selected_city):
 
         return False
 
-def select_new_city(selected_city,):
+def select_new_city():
     while True:
+        print('')
         new_city = input("Give New City Name: ")
         city_is_valid = check_loc_valid(new_city)
 
