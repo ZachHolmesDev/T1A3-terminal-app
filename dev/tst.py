@@ -92,12 +92,12 @@ def print_export_options(selected_city):
 # main function asks for an inital city then uses a loop to render the ui and give the user options untill they exit
 # --------------------------
 def main():
-    selected_city = "Brisbane"
-    current_weather_response = None
-    forecast_response = None 
-    option = None 
-    export_option = None
-    error_text = None
+    selected_city             = "Brisbane"
+    current_weather_response  = None
+    forecast_response         = None 
+    option                    = None 
+    export_option             = None
+    error_text                = None
 
     # info = None
     print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
@@ -111,7 +111,7 @@ def main():
 
     while True:
         print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
-        error_text = ""
+        error_text = None
         option = input("Enter option number here: ")
         print("")
         print("")
