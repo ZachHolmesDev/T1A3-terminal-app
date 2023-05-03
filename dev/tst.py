@@ -108,7 +108,7 @@ def menu():
                 new_city = input("Give New City Name: ")
                 city_is_valid = check_loc_valid(new_city)
 
-                if selected_city == "q":
+                if new_city == "q":
                     break
                 elif city_is_valid:
                     selected_city = new_city
