@@ -1,5 +1,6 @@
 import requests
 import os 
+import json 
 
 api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 
@@ -26,8 +27,8 @@ def print_menu(selected_city,):
     print("[s] Select City ")
     print("[1] Get current weather            for Selected City ")
     print("[2] Display current day forecast   for Selected City ")
-    print("[3] **Get Historical Data")
-    print("[4] **Export something???")
+    print("[3] ***Get Historical Data")
+    print("[4] *Export something?")
     print("[q] Quit Program")
     print(f"Selected City: ", {selected_city})
     print("================================================")
@@ -79,11 +80,11 @@ def print_forecast(forcast_response):
     print("-----------------------------------------------")
     
 def print_export_options(selected_city):
-    print("Currently Data is exported as .JSON")
     print("---Export Menu---")
+    print("NOTE Currently Data is exported as .JSON")
     print("[s] Select City ")
     print("[1] Export forecast")
-    print("[1] Export historical data")
+    print("[2] Export historical data")
     print("[3] ")
     print("[0] Return to main menu")
     print("[q] Quit Program")
@@ -137,8 +138,12 @@ def main():
                     match export_option:
                         case 's':
                             selected_city = select_new_city()
-                            
-                        # case '1':
+                        case '1':
+                            forecast_export = get_forecast_wapi(selected_city)
+                            forecast_export = json.dumps(forecast_export.json(), indent=5)
+                            with open('test_export.json', 'w') as file:
+                                file.write(forecast_export)
+                                continue
                         # case '2':
                         # case '3':
                         case 'q':
@@ -191,10 +196,11 @@ def select_new_city():
             error_text = f"City name '{new_city}' is invalid. Please try again."
             print(error_text)           
     
-
+# testing fuunction for development
 def write_response(response):
+    response = json.dumps(response.json(), indent=5)
     file = open('rqsts.json', 'a')
-    file.write(response.text)
+    file.write(response)
     file.close()
 
 main()
