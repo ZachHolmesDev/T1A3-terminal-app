@@ -5,7 +5,9 @@ api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 
 # Ui functions
 # --------------------------
+# This function is will display info to
 def print_ui(selected_city, current_weather_response, forcast_response, option, error_text):
+    # clears the commandline to keep clean
     os.system('cls' if os.name == 'nt' else 'clear')
         
     print_menu(selected_city)
@@ -15,7 +17,7 @@ def print_ui(selected_city, current_weather_response, forcast_response, option, 
     if option == '2':
         print_forecast(forcast_response)
     
-    if error_text != "":
+    if error_text != None:
         print(error_text)
 
 def print_menu(selected_city,):
@@ -26,7 +28,7 @@ def print_menu(selected_city,):
     print("[2] Display current day forecast   for Selected City ")
     print("[3] **Get Historical Data")
     print("[4] **Export something???")
-    print("[q] Quit")
+    print("[q] Quit Program")
     print(f"Selected City: ", {selected_city})
     print("================================================")
 
@@ -62,6 +64,7 @@ def print_current_weather(current_weather_response):
 
 def print_forecast(forcast_response):
     print('Forecast for:          =' , forcast_response.json()['location']['name'])
+    print('date                   =' , forcast_response.json()['forecast']['forecastday'][0]['date'])
     print('condition              =' , forcast_response.json()['forecast']['forecastday'][0]['day']['condition']['text'])
     print('maxtemp_c              =' , forcast_response.json()['forecast']['forecastday'][0]['day']['maxtemp_c'])
     print('mintemp_c              =' , forcast_response.json()['forecast']['forecastday'][0]['day']['mintemp_c'])
@@ -70,33 +73,42 @@ def print_forecast(forcast_response):
     print('chance_of_snow         =' , forcast_response.json()['forecast']['forecastday'][0]['day']['daily_chance_of_snow'])
     print('avghumidity            =' , forcast_response.json()['forecast']['forecastday'][0]['day']['avghumidity'])
     # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''])
-    # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''])
     # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''][''])
     # print('              =' , forcast_response.json()[''][''][''][''][''])
     # print('              =' , forcast_response.json()[''][''])
     print("-----------------------------------------------")
     
+def print_export_options(selected_city):
+    print("Currently Data is exported as .JSON")
+    print("---Export Menu---")
+    print("[s] Select City ")
+    print("[1] Export forecast")
+    print("[1] Export historical data")
+    print("[3] ")
+    print("[0] Return to main menu")
+    print("[q] Quit Program")
+    print(f"Selected City: ", {selected_city})
     
-# menu functions
+# main function asks for an inital city then uses a loop to render the ui and give the user options untill they exit
 # --------------------------
-def menu():
+def main():
     selected_city = "Brisbane"
     current_weather_response = None
     forecast_response = None 
     option = None 
-    error_text = ""
+    export_option = None
+    error_text = None
 
     # info = None
     print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
     
     if selected_city == None:
+        print("")
         print("No City selected")
         selected_city = input("Give City Name: ")
-        print("")
-        print("")
     if selected_city == "q":
          return
-     
+
     while True:
         print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
         error_text = ""
@@ -109,7 +121,7 @@ def menu():
                 city_is_valid = check_loc_valid(new_city)
 
                 if new_city == "q":
-                    break
+                    return
                 elif city_is_valid:
                     selected_city = new_city
                 else:
@@ -120,18 +132,32 @@ def menu():
                 continue
             case '1':
                 current_weather_response = get_current_weather_wapi(selected_city)
+                # writing for dev testing
                 write_response(current_weather_response)
                 continue
             case '2':
                 forecast_response = get_forecast_wapi(selected_city)
+                # writing for dev testing
                 write_response(forecast_response)
                 continue
+            case '4':
+                while export_option != '0':
+                    print_export_options(selected_city)
+                    export_option = input("Enter option number here: ")
+                    match export_option:
+                        # case 's':
+                            
+                        # case '1':
+                        # case '2':
+                        # case '3':
+                        case 'q':
+                            return
+                export_option = None
             case "q":
-                break
+                return
             # case 3:
             
-    print('thanks for using T1A3 Weather CLI')
-    print('PROGRAM EXIT')
+
     
 # get functions
 # ------------------------------
@@ -143,6 +169,11 @@ def get_forecast_wapi(selected_city):
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/forecast.json?q={selected_city}&key={api_key_wapi_caleb}")
     return forecast_response
 
+# def get_current_weather_tmrio(selected_city):
+#     selected_city = requests.get(f"https://api.tomorrow.io/v4/weather/forecast?location={selected_city}&apikey=1xKR2c5vCp2WQO6ci3o6FljhPuTkB2GP")
+
+# other functions
+# -------------------------------
 def check_loc_valid(selected_city):
         loc_check = requests.get(f"http://api.weatherapi.com/v1/current.json?q={selected_city}&key={api_key_wapi_caleb}")
         write_response(loc_check)
@@ -153,18 +184,12 @@ def check_loc_valid(selected_city):
 
         return False
 
-
-        # if hasattr(loc_check.json(), 'error'):
-        #     return False
-        # else: 
-        #     return True
-
-# def get_current_weather_tmrio(selected_city):
-#     selected_city = requests.get(f"https://api.tomorrow.io/v4/weather/forecast?location={selected_city}&apikey=1xKR2c5vCp2WQO6ci3o6FljhPuTkB2GP")
-
 def write_response(response):
     file = open('rqsts.json', 'a')
     file.write(response.text)
     file.close()
 
-menu()
+main()
+
+print('thanks for using T1A3 Weather CLI')
+print('PROGRAM EXIT')
