@@ -117,18 +117,9 @@ def main():
         print("")
         match option:
             case "s":
-                new_city = input("Give New City Name: ")
-                city_is_valid = check_loc_valid(new_city)
-
-                if new_city == "q":
+                selected_city = select_new_city(selected_city,)
+                if selected_city == 'q':
                     return
-                elif city_is_valid:
-                    selected_city = new_city
-                else:
-                    error_text = f"City name '{new_city}' is invalid. Please try again."
-                
-                current_weather_response = None 
-                forecast_response = None 
                 continue
             case '1':
                 current_weather_response = get_current_weather_wapi(selected_city)
@@ -145,7 +136,8 @@ def main():
                     print_export_options(selected_city)
                     export_option = input("Enter option number here: ")
                     match export_option:
-                        # case 's':
+                        case 's':
+                            selected_city = select_new_city()
                             
                         # case '1':
                         # case '2':
@@ -183,6 +175,22 @@ def check_loc_valid(selected_city):
             return True
 
         return False
+
+def select_new_city(selected_city,):
+    while True:
+        new_city = input("Give New City Name: ")
+        city_is_valid = check_loc_valid(new_city)
+
+        if new_city == "q":
+            selected_city = new_city
+            return selected_city
+        elif city_is_valid:
+            selected_city = new_city
+            return selected_city
+        else:
+            error_text = f"City name '{new_city}' is invalid. Please try again."
+            print(error_text)           
+    
 
 def write_response(response):
     file = open('rqsts.json', 'a')
