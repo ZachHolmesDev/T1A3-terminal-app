@@ -113,6 +113,7 @@ def main():
         option = input("Enter option number here: ")
         print('')
         match option:
+            # calls a function to alow the user to select a new city 
             case "s":
                 selected_city = select_new_city()
                 if selected_city == 'q':
@@ -127,6 +128,10 @@ def main():
                 forecast_response = get_forecast_wapi(selected_city)
                 # writing for dev testing
                 write_response(forecast_response)
+            case '3':
+                history_response = get_history_wapi(selected_city)
+                # writing for dev testing
+                write_response(history_response)
                 continue
             case '4':
                 while export_option != '0':
@@ -135,12 +140,14 @@ def main():
                     match export_option:
                         case 's':
                             selected_city = select_new_city()
+                        # Export forecast
                         case '1':
                             forecast_export = get_forecast_wapi(selected_city)
                             forecast_export = json.dumps(forecast_export.json(), indent=5)
                             with open('test_export.json', 'w') as file:
                                 file.write(forecast_export)
                                 continue
+                        # Export historical data
                         # case '2':
                         # case '3':
                         case 'q':
@@ -160,6 +167,10 @@ def get_current_weather_wapi(selected_city):
 
 def get_forecast_wapi(selected_city):
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/forecast.json?q={selected_city}&key={api_key_wapi_caleb}")
+    return forecast_response
+
+def get_history_wapi(selected_city):
+    forecast_response = requests.get(f"http://api.weatherapi.com/v1/history.json?q={selected_city}&key={api_key_wapi_caleb}&dt=2023-05-01")
     return forecast_response
 
 # def get_current_weather_tmrio(selected_city):
