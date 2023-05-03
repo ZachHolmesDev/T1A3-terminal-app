@@ -17,9 +17,7 @@ def print_ui(selected_city, current_weather_response, forcast_response, option, 
     
     if option == '2':
         print_forecast(forcast_response)
-    
-    if error_text != None:
-        print(error_text)
+
 
 def print_menu(selected_city,):
     print("================================================")
@@ -112,7 +110,6 @@ def main():
 
     while True:
         print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
-        error_text = None
         option = input("Enter option number here: ")
         print('')
         match option:
