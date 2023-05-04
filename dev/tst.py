@@ -1,6 +1,7 @@
 import requests
 import os 
 import json 
+from datetime import datetime
 
 api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 
@@ -81,7 +82,7 @@ def print_export_options(selected_city):
     print("---Export Menu---")
     print("NOTE Currently Data is exported as .JSON")
     print("[s] Select City ")
-    print("[1] Export forecast")
+    print("[1] Export 24 HR forecast JSON")
     print("[2] Export historical data")
     print("[3] ")
     print("[0] Return to main menu")
@@ -142,9 +143,11 @@ def main():
                             selected_city = select_new_city()
                         # Export forecast
                         case '1':
+                            time_now = datetime.now()
+                            time_stamp = time_now.strftime('%Y-%m-%d %H:%M:%S')
                             forecast_export = get_forecast_wapi(selected_city)
                             forecast_export = json.dumps(forecast_export.json(), indent=5)
-                            with open('test_export.json', 'w') as file:
+                            with open(f'EXPORTS/test_export_{time_stamp}.json', 'w') as file:
                                 file.write(forecast_export)
                                 continue
                         # Export historical data
@@ -207,7 +210,7 @@ def select_new_city():
 # testing fuunction for development
 def write_response(response):
     response = json.dumps(response.json(), indent=5)
-    file = open('rqsts.json', 'a')
+    file = open('EXPORTS/rqsts.json', 'a')
     file.write(response)
     file.close()
 
