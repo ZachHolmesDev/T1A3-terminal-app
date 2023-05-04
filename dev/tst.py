@@ -82,9 +82,9 @@ def print_export_options(selected_city):
     print("---Export Menu---")
     print("NOTE Currently Data is exported as .JSON")
     print("[s] Select City ")
-    print("[1] Export 24 HR forecast JSON")
-    print("[2] Export historical data")
-    print("[3] ")
+    print("[1] Export 24 HR forecast  .JSON")
+    print("[2] Export historical data .JSON")
+    print("[3] Export Current Weather .JSON")
     print("[0] Return to main menu")
     print("[q] Quit Program")
     print(f"Selected City: ", {selected_city})
@@ -143,16 +143,16 @@ def main():
                             selected_city = select_new_city()
                         # Export forecast
                         case '1':
-                            time_now = datetime.now()
-                            time_stamp = time_now.strftime('%Y-%m-%d %H:%M:%S')
-                            forecast_export = get_forecast_wapi(selected_city)
-                            forecast_export = json.dumps(forecast_export.json(), indent=5)
-                            with open(f'EXPORTS/test_export_{time_stamp}.json', 'w') as file:
-                                file.write(forecast_export)
-                                continue
+                            export_response(selected_city, "forecast")
+                            continue
                         # Export historical data
-                        # case '2':
-                        # case '3':
+                        case '2':
+                            export_response(selected_city, "history")
+                            continue
+                        # Export current weather data
+                        case '3':
+                            export_response(selected_city, "current weather")
+                            continue
                         case 'q':
                             return
                 export_option = None
@@ -171,8 +171,9 @@ def get_current_weather_wapi(selected_city):
 def get_forecast_wapi(selected_city):
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/forecast.json?q={selected_city}&key={api_key_wapi_caleb}")
     return forecast_response
-
+# Note need to to have an input parameter currently uses chosen date as placholder 
 def get_history_wapi(selected_city):
+    
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/history.json?q={selected_city}&key={api_key_wapi_caleb}&dt=2023-05-01")
     return forecast_response
 
@@ -206,6 +207,23 @@ def select_new_city():
         else:
             error_text = f"City name '{new_city}' is invalid. Please try again."
             print(error_text)           
+
+def export_response(selected_city, call_type):
+    time_now = datetime.now()
+    time_stamp = time_now.strftime('%Y-%m-%d %H:%M:%S')
+    
+    if call_type == "forecast":
+        export = get_forecast_wapi(selected_city)
+    elif call_type == "history":
+        export = get_history_wapi(selected_city)
+    elif call_type == "current weather":
+        export = get_current_weather_wapi(selected_city)
+    
+    export = json.dumps(export.json(), indent=5)
+    
+    with open(f'EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json', 'w') as file:
+        file.write(export)
+
     
 # testing fuunction for development
 def write_response(response):
