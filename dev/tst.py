@@ -7,18 +7,24 @@ api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 
 # Ui functions
 # --------------------------
-# This function is will display info to
-def print_ui(selected_city, current_weather_response, forcast_response, option, error_text):
+# This function will call the apropriate print functions to display the right info to the user
+def print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,):
     # clears the commandline to keep ui clean
     os.system('cls' if os.name == 'nt' else 'clear')
         
     print_menu(selected_city)
-    if option == '1':
+    if menu_option == '1':
         print_current_weather(current_weather_response)
     
-    if option == '2':
-        print_forecast(forcast_response)
-
+    if menu_option == '2':
+        print_forecast(forecast_response)
+    
+    if menu_option == '3':
+        print_history(history_response, selected_city)
+    
+    if menu_option == '4':
+        print_export_options(selected_city)
+    print('')
 
 def print_menu(selected_city,):
     print("================================================")
@@ -27,7 +33,7 @@ def print_menu(selected_city,):
     print("[1] Get current weather            for Selected City ")
     print("[2] Display current day forecast   for Selected City ")
     print("[3] **Get Weather History for last 7 days")
-    print("[4] Export data as .JSON options")
+    print("[4] Export data options")
     print("[q] Quit Program")
     print(f"Selected City: ", {selected_city})
     print("================================================")
@@ -35,8 +41,8 @@ def print_menu(selected_city,):
     
 def print_current_weather(current_weather_response):
     print("Current weather for:   ",current_weather_response.json()['location']['name'],)
-    print('last_updated          =', current_weather_response.json()['current']['last_updated'])
-    print('localtime             =', current_weather_response.json()['location']['localtime'])
+    print('last_updated          =',current_weather_response.json()['current']['last_updated'])
+    print('localtime             =',current_weather_response.json()['location']['localtime'])
     print('current condition     =',current_weather_response.json()['current']['condition']['text'])
     print('')
     print('Temps')
@@ -57,26 +63,34 @@ def print_current_weather(current_weather_response):
     print('gust kph              =' , current_weather_response.json()['current']['gust_kph'])
     print('wind dir              =' , current_weather_response.json()['current']['wind_dir'])
     print('wind degree           =' , current_weather_response.json()['current']['wind_degree'])
-    # print('' , current_weather_response.json()['current'][''])
-    # print('' , current_weather_response.json()['current'][''])
-    # print('' , current_weather_response.json()['current'][''])
     print("-----------------------------------------------")
 
-def print_forecast(forcast_response):
-    print('Forecast for:         =' , forcast_response.json()['location']['name'])
-    print('date                  =' , forcast_response.json()['forecast']['forecastday'][0]['date'])
-    print('condition             =' , forcast_response.json()['forecast']['forecastday'][0]['day']['condition']['text'])
-    print('maxtemp_c             =' , forcast_response.json()['forecast']['forecastday'][0]['day']['maxtemp_c'])
-    print('mintemp_c             =' , forcast_response.json()['forecast']['forecastday'][0]['day']['mintemp_c'])
-    print('avgtemp_c             =' , forcast_response.json()['forecast']['forecastday'][0]['day']['avgtemp_c'])
-    print('chance_of_rain        =' , forcast_response.json()['forecast']['forecastday'][0]['day']['daily_chance_of_rain'])
-    print('chance_of_snow        =' , forcast_response.json()['forecast']['forecastday'][0]['day']['daily_chance_of_snow'])
-    print('avghumidity           =' , forcast_response.json()['forecast']['forecastday'][0]['day']['avghumidity'])
-    # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''])
-    # print('              =' , forcast_response.json()['forecast']['forecastday'][0]['day'][''][''])
-    # print('              =' , forcast_response.json()[''][''][''][''][''])
-    # print('              =' , forcast_response.json()[''][''])
+def print_forecast(forecast_response):
+    print('Forecast for:         =' , forecast_response.json()['location']['name'])
+    print('date                  =' , forecast_response.json()['forecast']['forecastday'][0]['date'])
+    print('condition             =' , forecast_response.json()['forecast']['forecastday'][0]['day']['condition']['text'])
+    print('maxtemp_c             =' , forecast_response.json()['forecast']['forecastday'][0]['day']['maxtemp_c'])
+    print('mintemp_c             =' , forecast_response.json()['forecast']['forecastday'][0]['day']['mintemp_c'])
+    print('avgtemp_c             =' , forecast_response.json()['forecast']['forecastday'][0]['day']['avgtemp_c'])
+    print('chance_of_rain        =' , forecast_response.json()['forecast']['forecastday'][0]['day']['daily_chance_of_rain'])
+    print('chance_of_snow        =' , forecast_response.json()['forecast']['forecastday'][0]['day']['daily_chance_of_snow'])
+    print('avghumidity           =' , forecast_response.json()['forecast']['forecastday'][0]['day']['avghumidity'])
     print("-----------------------------------------------")
+
+# figured out using this loop last, its a better solution to displaying more data without haiving to write it manunaly but dont have time to redo previous print functions
+def print_history(history_response, selected_city):
+    history_response = history_response.json()
+    print(f'Last 7 day history for {selected_city}')
+    for day in history_response["forecast"]["forecastday"]:
+        print("Date:", day["date"])
+        print("condition             =", day["day"]["condition"]["text"])
+        print("maxtemp_c             =", day["day"]["maxtemp_c"])
+        print("mintemp_c             =", day["day"]["mintemp_c"])
+        print("avgtemp_c             =", day["day"]["avgtemp_c"])
+        print("totalprecip_mm        =", day["day"]["totalprecip_mm"])
+        print("uv                    =", day["day"]["uv"])
+        print("avghumidity           =", day["day"]["avghumidity"])
+        print()
     
 def print_export_options(selected_city):
     print("---Export Sub Menu---")
@@ -96,12 +110,12 @@ def main():
     selected_city             = "Brisbane"
     current_weather_response  = None
     forecast_response         = None 
-    option                    = None 
+    menu_option               = None 
     export_option             = None
-    error_text                = None
+    history_response                = None
 
     # info = None
-    print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
+    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
     
     if selected_city == None:
         print("")
@@ -111,10 +125,9 @@ def main():
          return
 
     while True:
-        print_ui(selected_city, current_weather_response, forecast_response, option, error_text)
-        option = input("Enter option number here: ")
-        print('')
-        match option:
+        print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
+        menu_option= input("Enter option number here: ")
+        match menu_option:
             # calls a function to alow the user to select a new city 
             case "s":
                 selected_city = select_new_city()
@@ -137,7 +150,7 @@ def main():
                 continue
             case '4':
                 while export_option != '0':
-                    print_export_options(selected_city)
+                    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
                     export_option = input("Enter option number here: ")
                     match export_option:
                         case 's':
@@ -157,6 +170,8 @@ def main():
                         case 'q':
                             return
                 export_option = None
+                menu_option   = None
+                
             case "q":
                 return
             # case 3:
@@ -174,7 +189,6 @@ def get_forecast_wapi(selected_city):
     return forecast_response
 # Note need to to have an input parameter currently uses chosen date as placholder 
 def get_history_wapi(selected_city):
-    
     # input("give : ?")
         
     today  = date.today()
