@@ -178,14 +178,13 @@ def get_history_wapi(selected_city):
     # input("give : ?")
         
     today  = date.today()
+    # dt is the past to start the histoy request 
     dt     = today - timedelta(days=7)
+    # end_dt is a date in the futre ahead of dt
     end_dt = today - timedelta(days=1)
     
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/history.json?q={selected_city}&key={api_key_wapi_caleb}&dt={dt}&end_dt={end_dt}")
     return forecast_response
-
-# def get_current_weather_tmrio(selected_city):
-#     selected_city = requests.get(f"https://api.tomorrow.io/v4/weather/forecast?location={selected_city}&apikey=1xKR2c5vCp2WQO6ci3o6FljhPuTkB2GP")
 
 # other functions
 # -------------------------------
