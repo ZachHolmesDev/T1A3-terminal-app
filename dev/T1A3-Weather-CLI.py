@@ -112,7 +112,7 @@ def main():
     forecast_response         = None 
     menu_option               = None 
     export_option             = None
-    history_response                = None
+    history_response          = None
 
     # info = None
     print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
