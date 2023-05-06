@@ -1,24 +1,22 @@
-from T1A3_Weather_CLI import get_current_weather_wapi, check_loc_valid
+from T1A3_Weather_CLI import get_current_weather_wapi, check_loc_valid, api_key_wapi_caleb
 
 
 def test_get_current_weather_wapi():
-    # Test case 1: Check if the function returns a valid response for a known city
-    city1 = "New York"
-    response1 = get_current_weather_wapi(city1)
-    assert response1.status_code == 200, f"Failed to get current weather data for {city1}"
-
-    # Test case 2: Check if the function returns the correct error for an unknown city
-    city2 = "-----"
-    response2 = get_current_weather_wapi(city2)
-    assert "error" in response2.json(), f"Failed to return an error for an unknown city {city2}"
+    city = "New York"
+    response = get_current_weather_wapi(city)
+    assert response.status_code == 200, f"Failed to get the current weather for {city}"
+    assert response.json()['location']['name'] == city, f"Invalid city name in the response"
+    print(f"Test passed for get_current_weather_wapi() with city: {city}")
 
 def test_check_loc_valid():
-    # Test case 1: Check if the function returns True for a valid city
-    city1 = "Los Angeles"
-    result1 = check_loc_valid(city1)
-    assert result1 == True, f"Failed to validate the city {city1} as valid"
+    valid_city = "London"
+    invalid_city = "NotACity"
+    
+    assert check_loc_valid(valid_city) is True, f"Failed to validate city: {valid_city}"
+    assert check_loc_valid(invalid_city) is False, f"Failed to invalidate city: {invalid_city}"
+    print(f"Test passed for check_loc_valid() with cities: {valid_city} and {invalid_city}")
 
-    # Test case 2: Check if the function returns False for an invalid city
-    city2 = "-----"
-    result2 = check_loc_valid(city2)
-    assert result2 == False, f"Failed to validate the city {city2} as invalid"
+if __name__ == "__main__":
+    test_get_current_weather_wapi()
+    test_check_loc_valid()
+

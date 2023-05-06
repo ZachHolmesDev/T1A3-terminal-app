@@ -27,7 +27,7 @@ def print_ui(selected_city, current_weather_response, forecast_response, history
     
 # error handling for invalid inputs in the main menu 
 # this is handled different in the sub menu so should probbably be made more consistent but it is functional currently 
-    elif menu_option is not None: 
+    elif menu_option is not None and menu_option != 's': 
         print("Option input invalid try again")
     print('')
 
@@ -35,12 +35,12 @@ def print_menu(selected_city,):
     print("================================================")
     print("---Welcome to T1A3 Weather CLI---")
     print("[s] Select City ")
-    print("[1] Display Current weather       for Selected City ")
-    print("[2] Display Current day forecast  for Selected City ")
-    print("[3] Display Weather History       for last 7 days of Selected City")
+    print("[1] Display Current weather        for Selected City")
+    print("[2] Display Current day forecast   for Selected City")
+    print("[3] Display 7 day Weather History  for Selected City")
     print("[4] Export data options")
     print("[q] Quit Program")
-    print(f"Selected City: ", {selected_city})
+    print(f"Selected City is: ", {selected_city})
     print("================================================")
 
     
@@ -136,6 +136,7 @@ def main():
         match menu_option:
             # calls a function to alow the user to select a new city 
             case "s":
+                print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
                 selected_city = select_new_city()
                 if selected_city == 'q':
                     return
@@ -161,20 +162,17 @@ def main():
 
                     match export_option:
                         case 's':
+                            print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
                             selected_city = select_new_city()
-                        
                         # Export forecast
                         case '1':
                             success_message = export_response(selected_city, "forecast")
-                        
                         # Export historical data
                         case '2':
                             success_message = export_response(selected_city, "history")
-                        
                         # Export current weather data
                         case '3':
                             success_message = export_response(selected_city, "current weather")
-                        
                         case 'q':
                             return
 
@@ -237,7 +235,6 @@ def select_new_city():
                        
 def check_loc_valid(selected_city):
         loc_check = requests.get(f"http://api.weatherapi.com/v1/current.json?q={selected_city}&key={api_key_wapi_caleb}")
-        # write_response(loc_check)
         try:
             loc_check.json()['error']
         except:
