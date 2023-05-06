@@ -8,7 +8,7 @@ api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 # Ui functions
 # --------------------------
 # This function will call the apropriate print functions to display the right info to the user
-def print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,):
+def print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option):
     # clears the commandline to keep ui clean
     os.system('cls' if os.name == 'nt' else 'clear')
         
@@ -16,14 +16,19 @@ def print_ui(selected_city, current_weather_response, forecast_response, history
     if menu_option == '1':
         print_current_weather(current_weather_response)
     
-    if menu_option == '2':
+    elif menu_option == '2':
         print_forecast(forecast_response)
     
-    if menu_option == '3':
+    elif menu_option == '3':
         print_history(history_response, selected_city)
     
-    if menu_option == '4':
+    elif menu_option == '4':
         print_export_options(selected_city)
+    
+# error handling for invalid inputs in the main menu 
+# this is handled different in the sub menu so should probbably be made more consistent but it is functional currently 
+    elif menu_option is not None: 
+        print("Option input invalid try again")
     print('')
 
 def print_menu(selected_city,):
@@ -105,7 +110,7 @@ def print_export_options(selected_city):
     print("[q] Quit Program")
     print(f"Selected City: ", {selected_city})
     
-# main function asks for an inital city then uses a loop to render the ui and give the user options untill they exit
+# main function asks for an inital city then uses a loop to render the ui and call the options for the user untill they exit
 # --------------------------
 def main():
     # set as brisbane to expidite testing
@@ -116,8 +121,7 @@ def main():
     export_option             = None
     history_response          = None
 
-    # info = None
-    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
+    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
     
     if selected_city == None:
         print("")
@@ -127,7 +131,7 @@ def main():
          return
 
     while True:
-        print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
+        print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
         menu_option= input("Enter option number here: ")
         match menu_option:
             # calls a function to alow the user to select a new city 
@@ -152,28 +156,32 @@ def main():
                 continue
             case '4':
                 while export_option != '0':
-                    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
+                    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
+                    
+# error handling for invalid inputs in the sub menu 
+# this is handled different in the main menu so should probbably be made more consistent but it is functional currently 
+                    if export_option not in {'s', '1', '2', '3', 'q', '0', None}:
+                        print('export option invalidXXXXX')
+                    
                     export_option = input("Enter export option number here: ")
+
                     match export_option:
                         case 's':
                             selected_city = select_new_city()
                         # Export forecast
                         case '1':
                             export_response(selected_city, "forecast")
-                            continue
                         # Export historical data
                         case '2':
                             export_response(selected_city, "history")
-                            continue
                         # Export current weather data
                         case '3':
                             export_response(selected_city, "current weather")
-                            continue
                         case 'q':
                             return
+
                 export_option = None
-                menu_option   = None
-                
+                menu_option   = None                
             case "q":
                 return
             # case 3:
@@ -189,14 +197,14 @@ def get_current_weather_wapi(selected_city):
 def get_forecast_wapi(selected_city):
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/forecast.json?q={selected_city}&key={api_key_wapi_caleb}")
     return forecast_response
-# Note need to to have an input parameter currently uses chosen date as placholder 
+
+# Currently get the full 7 day history from todays date 
 def get_history_wapi(selected_city):
-    # input("give : ?")
         
     today  = date.today()
-    # dt is the past to start the histoy request 
+    # dt is the past date to start the histoy request 
     dt     = today - timedelta(days=7)
-    # end_dt is a date in the futre ahead of dt
+    # end_dt is a date in the futre from dt
     end_dt = today - timedelta(days=1)
     
     forecast_response = requests.get(f"http://api.weatherapi.com/v1/history.json?q={selected_city}&key={api_key_wapi_caleb}&dt={dt}&end_dt={end_dt}")
@@ -241,12 +249,12 @@ def export_response(selected_city, call_type):
     elif call_type == "current weather":
         export = get_current_weather_wapi(selected_city)
     
-    # Add this line before opening the file
     os.makedirs('EXPORTS', exist_ok=True)
     export = json.dumps(export.json(), indent=5)
     
     with open(f'EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json', 'w') as file:
         file.write(export)
+#line bellow dosent work currently with the self clearing print_ui function, its printing then gets cleared
     print(f'Sucsessful export : EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json')
 
     
@@ -269,7 +277,6 @@ def write_response(response):
 # wrapped for testing
 # if __name__ == "__main__":
 main()
-
 
 print('thanks for using T1A3 Weather CLI')
 print('PROGRAM EXIT')

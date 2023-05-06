@@ -8,7 +8,7 @@ def test_get_current_weather_wapi():
     assert response1.status_code == 200, f"Failed to get current weather data for {city1}"
 
     # Test case 2: Check if the function returns the correct error for an unknown city
-    city2 = "UnknownCity"
+    city2 = "-----"
     response2 = get_current_weather_wapi(city2)
     assert "error" in response2.json(), f"Failed to return an error for an unknown city {city2}"
 
@@ -19,6 +19,6 @@ def test_check_loc_valid():
     assert result1 == True, f"Failed to validate the city {city1} as valid"
 
     # Test case 2: Check if the function returns False for an invalid city
-    city2 = "sdfgsdgs"
+    city2 = "-----"
     result2 = check_loc_valid(city2)
     assert result2 == False, f"Failed to validate the city {city2} as invalid"
