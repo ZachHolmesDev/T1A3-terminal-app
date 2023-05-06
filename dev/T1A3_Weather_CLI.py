@@ -128,7 +128,7 @@ def main():
         print("No City selected")
         selected_city = input("Give City Name: ")
     if selected_city == "q":
-         return
+        return
 
     while True:
         print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
@@ -155,37 +155,44 @@ def main():
                 write_response(history_response)
                 continue
             case '4':
+                # this loop handles the sub menu functionality
                 while export_option != '0':
-                    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
-                    
-# error handling for invalid inputs in the sub menu 
-# this is handled different in the main menu so should probbably be made more consistent but it is functional currently 
-                    if export_option not in {'s', '1', '2', '3', 'q', '0', None}:
-                        print('export option invalidXXXXX')
-                    
-                    export_option = input("Enter export option number here: ")
+                    success_message = None
 
                     match export_option:
                         case 's':
                             selected_city = select_new_city()
+                        
                         # Export forecast
                         case '1':
-                            export_response(selected_city, "forecast")
+                            success_message = export_response(selected_city, "forecast")
+                        
                         # Export historical data
                         case '2':
-                            export_response(selected_city, "history")
+                            success_message = export_response(selected_city, "history")
+                        
                         # Export current weather data
                         case '3':
-                            export_response(selected_city, "current weather")
+                            success_message = export_response(selected_city, "current weather")
+                        
                         case 'q':
                             return
 
+                    print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
+
+                    if success_message:
+                        print(success_message)
+
+                    if export_option not in {'s', '1', '2', '3', 'q', '0', None}:
+                        print('export option invalid try again')
+
+                    export_option = input("Enter export option number here: ")
+                # resets options to keep UI clean
                 export_option = None
-                menu_option   = None                
+                menu_option   = None    
+            
             case "q":
                 return
-            # case 3:
-            
 
     
 # get functions
@@ -212,16 +219,6 @@ def get_history_wapi(selected_city):
 
 # other functions
 # -------------------------------
-def check_loc_valid(selected_city):
-        loc_check = requests.get(f"http://api.weatherapi.com/v1/current.json?q={selected_city}&key={api_key_wapi_caleb}")
-        # write_response(loc_check)
-        try:
-            loc_check.json()['error']
-        except:
-            return True
-
-        return False
-
 def select_new_city():
     while True:
         print('')
@@ -236,8 +233,19 @@ def select_new_city():
             return selected_city
         else:
             error_text = f"City name '{new_city}' is invalid. Please try again."
-            print(error_text)           
+            print(error_text)
+                       
+def check_loc_valid(selected_city):
+        loc_check = requests.get(f"http://api.weatherapi.com/v1/current.json?q={selected_city}&key={api_key_wapi_caleb}")
+        # write_response(loc_check)
+        try:
+            loc_check.json()['error']
+        except:
+            return True
 
+        return False
+
+# exports the data as a .json file
 def export_response(selected_city, call_type):
     time_now = datetime.now()
     time_stamp = time_now.strftime('%Y-%m-%d %H:%M:%S')
@@ -255,10 +263,9 @@ def export_response(selected_city, call_type):
     with open(f'EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json', 'w') as file:
         file.write(export)
 #line bellow dosent work currently with the self clearing print_ui function, its printing then gets cleared
-    print(f'Sucsessful export : EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json')
-
+    return f'Successful export: EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json'
     
-# testing fuunction for development
+# testing function for development
 def write_response(response):
     try:
         if response.status_code == 200 and response.text:
