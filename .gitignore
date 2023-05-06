@@ -1,6 +1,6 @@
 # Ignore Python compiled files and folders for development
 __pycache__/
 .pytest_cache
-json-examples/
+
 # working venv
 weather_CLI-venv/
