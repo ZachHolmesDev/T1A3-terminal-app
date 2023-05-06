@@ -2,14 +2,14 @@ from T1A3_Weather_CLI import get_current_weather_wapi, check_loc_valid, api_key_
 
 
 def test_get_current_weather_wapi():
-    city = "New York"
+    city = "Brisbane"
     response = get_current_weather_wapi(city)
     assert response.status_code == 200, f"Failed to get the current weather for {city}"
     assert response.json()['location']['name'] == city, f"Invalid city name in the response"
     print(f"Test passed for get_current_weather_wapi() with city: {city}")
 
 def test_check_loc_valid():
-    valid_city = "London"
+    valid_city = "Brisbane"
     invalid_city = "NotACity"
     
     assert check_loc_valid(valid_city) is True, f"Failed to validate city: {valid_city}"
