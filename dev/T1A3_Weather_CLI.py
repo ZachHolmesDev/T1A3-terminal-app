@@ -30,9 +30,9 @@ def print_menu(selected_city,):
     print("================================================")
     print("---Welcome to T1A3 Weather CLI---")
     print("[s] Select City ")
-    print("[1] Get current weather            for Selected City ")
-    print("[2] Display current day forecast   for Selected City ")
-    print("[3] **Get Weather History for last 7 days")
+    print("[1] Display Current weather       for Selected City ")
+    print("[2] Display Current day forecast  for Selected City ")
+    print("[3] Display Weather History       for last 7 days of Selected City")
     print("[4] Export data options")
     print("[q] Quit Program")
     print(f"Selected City: ", {selected_city})
@@ -95,6 +95,8 @@ def print_history(history_response, selected_city):
 def print_export_options(selected_city):
     print("---Export Sub Menu---")
     print("NOTE Currently Data is exported as .JSON")
+    print("for each export you request a new file will be created ")
+    print("in the export folder with the apropriate name and date time stamp")
     print("[s] Select City ")
     print("[1] Export 24 HR forecast                   .JSON")
     print("[2] Export Weather History for last 7 days  .JSON")
@@ -151,7 +153,7 @@ def main():
             case '4':
                 while export_option != '0':
                     print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option,)
-                    export_option = input("Enter option number here: ")
+                    export_option = input("Enter export option number here: ")
                     match export_option:
                         case 's':
                             selected_city = select_new_city()
@@ -204,7 +206,7 @@ def get_history_wapi(selected_city):
 # -------------------------------
 def check_loc_valid(selected_city):
         loc_check = requests.get(f"http://api.weatherapi.com/v1/current.json?q={selected_city}&key={api_key_wapi_caleb}")
-        write_response(loc_check)
+        # write_response(loc_check)
         try:
             loc_check.json()['error']
         except:
@@ -239,20 +241,35 @@ def export_response(selected_city, call_type):
     elif call_type == "current weather":
         export = get_current_weather_wapi(selected_city)
     
+    # Add this line before opening the file
+    os.makedirs('EXPORTS', exist_ok=True)
     export = json.dumps(export.json(), indent=5)
     
     with open(f'EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json', 'w') as file:
         file.write(export)
+    print(f'Sucsessful export : EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json')
 
     
 # testing fuunction for development
 def write_response(response):
-    response = json.dumps(response.json(), indent=5)
-    file = open('EXPORTS/rqsts.json', 'a')
-    file.write(response)
-    file.close()
+    try:
+        if response.status_code == 200 and response.text:
+            response = json.dumps(response.json(), indent=5)
+            file = open('EXPORTS/rqsts.json', 'a')
+            file.write(response)
+            file.close()
+        else:
+            raise ValueError('Invalid or empty response')
+    except (ValueError, requests.exceptions.JSONDecodeError) as e:
+        print(f"Error: {e}")
+        response = None
 
+    return response
+
+# wrapped for testing
+# if __name__ == "__main__":
 main()
+
 
 print('thanks for using T1A3 Weather CLI')
 print('PROGRAM EXIT')
