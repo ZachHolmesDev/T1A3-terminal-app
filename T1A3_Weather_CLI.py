@@ -143,17 +143,17 @@ def main():
                 continue
             case '1':
                 current_weather_response = get_current_weather_wapi(selected_city)
-                # writing for dev testing
-                write_response(current_weather_response)
+                # writing used for testing
+                # write_response(current_weather_response)
                 continue
             case '2':
                 forecast_response = get_forecast_wapi(selected_city)
-                # writing for dev testing
-                write_response(forecast_response)
+                # writing used for testing
+                # write_response(forecast_response)
             case '3':
                 history_response = get_history_wapi(selected_city)
-                # writing for dev testing
-                write_response(history_response)
+                # writing used for testing
+                # write_response(history_response)
                 continue
             case '4':
                 # this loop handles the sub menu functionality
@@ -259,27 +259,25 @@ def export_response(selected_city, call_type):
     
     with open(f'EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json', 'w') as file:
         file.write(export)
-#line bellow dosent work currently with the self clearing print_ui function, its printing then gets cleared
+
     return f'Successful export: EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json'
     
-# testing function for development
-def write_response(response):
-    try:
-        if response.status_code == 200 and response.text:
-            response = json.dumps(response.json(), indent=5)
-            file = open('EXPORTS/rqsts.json', 'a')
-            file.write(response)
-            file.close()
-        else:
-            raise ValueError('Invalid or empty response')
-    except (ValueError, requests.exceptions.JSONDecodeError) as e:
-        print(f"Error: {e}")
-        response = None
+# testing function used to write responses to a file so i can see what to api is returning
+# def write_response(response):
+#     try:
+#         if response.status_code == 200 and response.text:
+#             response = json.dumps(response.json(), indent=5)
+#             file = open('EXPORTS/rqsts.json', 'a')
+#             file.write(response)
+#             file.close()
+#         else:
+#             raise ValueError('Invalid or empty response')
+#     except (ValueError, requests.exceptions.JSONDecodeError) as e:
+#         print(f"Error: {e}")
+#         response = None
 
-    return response
+#     return response
 
-# wrapped for testing
-# if __name__ == "__main__":
 main()
 
 print('thanks for using T1A3 Weather CLI')
