@@ -7,7 +7,18 @@ api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 
 # Ui functions
 # --------------------------
-# This function will call the apropriate print functions to display the right info to the user
+"""
+This is a set of functions that print different parts of a weather CLI interface in Python.
+
+:param selected_city: A string representing the currently selected city for weather information
+:param current_weather_response: It is a response object obtained from an API call to retrieve the
+current weather data for a selected city. It contains information such as the location name, current
+condition, temperature, precipitation, visibility, wind speed and direction, etc
+:param forecast_response: The response object containing the forecast data for a selected city
+:param history_response: The response object containing the weather history data for a selected city
+:param menu_option: The selected option from the main menu, which determines which information to
+display or which export option to choose
+"""
 def print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option):
     # clears the commandline to keep ui clean
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -111,6 +122,12 @@ def print_export_options(selected_city):
     print(f"Selected City: ", {selected_city})
     
 # main function asks for an inital city then uses a loop to render the ui and call the options for the user untill they exit
+"""
+This is the main function of the application that allows the user to select a city, view
+current weather, forecast, and historical data, and export the data in different formats.
+:return: The function `main()` is not returning anything. It contains a series of statements and
+loops that execute based on user input.
+"""
 # --------------------------
 def main():
     # set as brisbane to expidite testing
@@ -194,6 +211,14 @@ def main():
 
     
 # get functions
+"""
+These are Python functions that use the WeatherAPI to retrieve current weather, forecast, and
+historical weather data for a selected city.
+
+:param selected_city: The name of the city for which weather data is being requested
+:return: The functions are returning responses from the WeatherAPI for current weather, forecast,
+and historical weather data for a selected city.
+"""
 # ------------------------------
 def get_current_weather_wapi(selected_city):
     current_weather_response = requests.get(f"http://api.weatherapi.com/v1/current.json?q={selected_city}&key={api_key_wapi_caleb}")
@@ -216,6 +241,19 @@ def get_history_wapi(selected_city):
     return forecast_response
 
 # other functions
+    """
+    The function 
+    `select_new_city()` 
+    prompts the user to input a new city name and checks if it is a
+    valid location using the `check_loc_valid()` function.
+    :return: The code snippet contains two functions. The `select_new_city()` function returns the
+    selected city name entered by the user or "q" if the user chooses to quit. 
+    
+    The function
+    `check_loc_valid(selected_city)`  
+    returns a boolean value indicating whether the selected
+    city is valid or not. It returns `True` if the city is valid and `False` if it is not valid.
+    """
 # -------------------------------
 def select_new_city():
     while True:
@@ -243,6 +281,17 @@ def check_loc_valid(selected_city):
         return False
 
 # exports the data as a .json file
+"""
+This function exports weather data for a selected city and call type as a JSON file with a
+timestamped filename.
+
+:param selected_city: The name of the city for which the weather data is being exported
+:param call_type: The call_type parameter is a string that specifies the type of weather data to
+retrieve. It can be one of three values: "forecast", "history", or "current weather"
+:return: a string indicating the successful export of a JSON file containing weather data for a
+selected city and call type. The string includes the file path and name of the exported file.
+"""
+# Note this function dose not include error handling for if the API is down 
 def export_response(selected_city, call_type):
     time_now = datetime.now()
     time_stamp = time_now.strftime('%Y-%m-%d %H:%M:%S')
@@ -259,24 +308,31 @@ def export_response(selected_city, call_type):
     
     with open(f'EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json', 'w') as file:
         file.write(export)
-
     return f'Successful export: EXPORTS/{selected_city}_{call_type}_export_{time_stamp}.json'
-    
-# testing function used to write responses to a file so i can see what to api is returning
-# def write_response(response):
-#     try:
-#         if response.status_code == 200 and response.text:
-#             response = json.dumps(response.json(), indent=5)
-#             file = open('EXPORTS/rqsts.json', 'a')
-#             file.write(response)
-#             file.close()
-#         else:
-#             raise ValueError('Invalid or empty response')
-#     except (ValueError, requests.exceptions.JSONDecodeError) as e:
-#         print(f"Error: {e}")
-#         response = None
 
-#     return response
+"""    
+The bellow code defines a function called `write_response` that takes in a `response` object as an
+argument. The function checks if the response status code is 200 and if the response text is not
+empty. If both conditions are met, the response is converted to a JSON string with indentation and
+written to a file called `rqsts.json` in the `EXPORTS` directory. If the response status code is not
+200 or the response text is empty, a `ValueError` is raised. If there is an error decoding the
+response JSON, a `JSONDecodeError` is caught
+testing function used to write responses to a file so i can see what to api is returning
+"""
+def write_response(response):
+    try:
+        if response.status_code == 200 and response.text:
+            response = json.dumps(response.json(), indent=5)
+            file = open('EXPORTS/rqsts.json', 'a')
+            file.write(response)
+            file.close()
+        else:
+            raise ValueError('Invalid or empty response')
+    except (ValueError, requests.exceptions.JSONDecodeError) as e:
+        print(f"Error: {e}")
+        response = None
+
+    return response
 
 main()
 
