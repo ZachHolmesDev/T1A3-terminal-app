@@ -109,16 +109,16 @@ def print_history(history_response, selected_city):
         print()
     
 def print_export_options(selected_city):
-    print("---Export Sub Menu---")
-    print("NOTE Currently Data is exported as .JSON")
-    print("for each export you request a new file will be created ")
-    print("in the export folder with the apropriate name and date time stamp")
-    print("[s] Select City ")
-    print("[1] Export 24 HR forecast                   .JSON")
-    print("[2] Export Weather History for last 7 days  .JSON")
-    print("[3] Export Current Weather                  .JSON")
-    print("[0] Return to main menu")
-    print("[q] Quit Program")
+    print("    ---Export Sub Menu---")
+    print("    NOTE Currently Data is exported as .JSON")
+    print("    for each export you request a new file will be created ")
+    print("    in the export folder with the apropriate name and date time stamp")
+    print("    [s] Select City ")
+    print("    [1] Export 24 HR forecast                   .JSON")
+    print("    [2] Export Weather History for last 7 days  .JSON")
+    print("    [3] Export Current Weather                  .JSON")
+    print("    [0] Return to main menu")
+    print("    [q] Quit Program")
     print(f"Selected City: ", {selected_city})
     
 # main function asks for an inital city then uses a loop to render the ui and call the options for the user untill they exit
@@ -181,6 +181,8 @@ def main():
                         case 's':
                             print_ui(selected_city, current_weather_response, forecast_response, history_response, menu_option)
                             selected_city = select_new_city()
+                            if selected_city == 'q':
+                                return
                         # Export forecast
                         case '1':
                             success_message = export_response(selected_city, "forecast")

@@ -20,4 +20,4 @@ if [ ! -f "$VENV_NAME/requirements_installed" ]; then
 fi
 
 # Run the Python script
-python3 T1A3_Weather_CLI.py
+python3 main.py
