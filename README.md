@@ -1,25 +1,21 @@
 # T1A3-terminal-app Zach Holmes
 
-## Table of Contents
-
 - [T1A3-terminal-app Zach Holmes](#t1a3-terminal-app-zach-holmes)
-  - [Table of Contents](#table-of-contents)
   - [Source Control Repository](#source-control-repository)
+- [Description and Fetures](#description-and-fetures)
   - [Introduction](#introduction)
   - [Features](#features)
-    - [Feature 1: \[Feature name\]](#feature-1-feature-name)
-    - [Feature 2: \[Feature name\]](#feature-2-feature-name)
-    - [Feature 3: \[Feature name\]](#feature-3-feature-name)
-  - [Implementation Plan](#implementation-plan)
-    - [Feature 1: \[Feature name\]](#feature-1-feature-name-1)
-    - [Feature 2: \[Feature name\]](#feature-2-feature-name-1)
-    - [Feature 3: \[Feature name\]](#feature-3-feature-name-1)
-  - [Code Style](#code-style)
-  - [References](#references)
+    - [1. Display weather information:](#1-display-weather-information)
+    - [2. Export weather data](#2-export-weather-data)
+    - [3. Select a new city](#3-select-a-new-city)
+- [Implementation Plan](#implementation-plan)
+- [Code Style](#code-style)
 
 ## Source Control Repository
 
 Access the source control repository at [zholmes430/t1a3-terminal-app](https://github.com/zholmes430/t1a3-terminal-app).
+
+# Description and Fetures
 
 ## Introduction
 
@@ -27,21 +23,51 @@ This project is a command-line interface (CLI) application that provides users w
 
 The application has several functions to handle various tasks, such as fetching weather data, displaying the user interface, and exporting data. It utilizes the requests library to make API calls, and the os, json, and datetime libraries for other functionality.
 
+The documentation i used for the WeatherAPI.com service can be found at [www.weatherapi.com/docs/](https://www.weatherapi.com/docs/).
+
+note the api is limited to the free version as you can see in the image below:
+
+![api limit](/README-images/wapi-price.png)
+
 ## Features
 
-### Feature 1: [Feature name]
+Here are the three main features of the application, along with the description of how they demonstrate the understanding of variables, loops, conditional control structures, and error handling:
 
-- Description: Briefly describe the feature and how it demonstrates the use of variables and the concept of variable scope.
+  ### 1. Display weather information:
 
-### Feature 2: [Feature name]
+This feature allows the user to display various weather information for a selected city, including current weather, a forecast for the current day, and a 7-day weather history. The information is retrieved using API calls to the Weather API.
 
-- Description: Briefly describe the feature and how it demonstrates loops and conditional control structures.
+- Variables: Throughout the code, variables are used to store user input, API responses, and other data needed for processing. For example, the selected_city variable holds the city chosen by the user, and the current_weather_response variable holds the API response for the current weather.
 
-### Feature 3: [Feature name]
+- Loops: The print_history function uses a loop to iterate through the historical weather data and print it to the console. The loop iterates through the list of days in the response and extracts relevant information for each day.
 
-- Description: Briefly describe the feature and how it demonstrates error handling.
+- Conditional control structures: The main function uses a match statement, which is similar to a switch statement, to determine which action to perform based on the user's input. The case statements within the match statement handle the different actions the user can take.
 
-## Implementation Plan
+- Error handling: The check_loc_valid function checks if the city entered by the user is valid by making an API call and handling the error response if it's not valid. If the city is invalid or there's a connection error, the function prints the appropriate error message and prompts the user to try again by pressing enter. It returns a tuple containing a boolean value (True if the city is valid, False otherwise) and an error message. The select_new_city function uses the check_loc_valid function and iterates until a valid city is entered or the user inputs "q" to quit.
+
+### 2. Export weather data
+
+The application allows the user to export the full weather data from the API in JSON format, with options to export the 24-hour forecast, 7-day history, or current weather data for the selected city.
+
+- Variables: The export_response function uses variables such as selected_city, call_type, and export to store the data needed for exporting the JSON file.
+
+- Conditional control structures: The function uses an if statement to determine which API call to make based on the call_type argument.
+
+- Error handling: The function calls the get_ functions that will handle any errors that may occur during the API call in a simmilar way to the check_loc_valid function.
+
+### 3. Select a new city
+
+The user can change the selected city at any time to display and export weather data for a different city.
+
+- Variables: The select_new_city function uses the new_city and city_is_valid variables to store user input and check if the city is valid.
+
+- Loops: The function uses a while loop to repeatedly ask the user for a new city until a valid city is entered or the user quits.
+
+- Conditional control structures: The if statement in the select_new_city function checks if the user input is valid or if the user wants to quit.
+
+- Error handling: The check_loc_valid function checks if the city is valid and handles any errors that may occur during the API call.
+
+# Implementation Plan
 
 Use this section to outline your implementation plan. You may use a table, a bulleted list or any other format that fits your needs. Include the following information for each feature:
 
@@ -51,33 +77,20 @@ Use this section to outline your implementation plan. You may use a table, a bul
 
 Provide screenshots or links to your project management platform where you are tracking your implementation plan.
 
-### Feature 1: [Feature name]
 
-- [ ] Task 1 (Deadline: YYYY-MM-DD)
-- [ ] Task 2 (Deadline: YYYY-MM-DD)
-- ...
+# Code Style
 
-### Feature 2: [Feature name]
+This project roughly adheres to the [PEP 8 style guide](https://peps.python.org/pep-0008/), which is the recommended style guide for Python code. 
 
-- [ ] Task 1 (Deadline: YYYY-MM-DD)
-- [ ] Task 2 (Deadline: YYYY-MM-DD)
-- ...
+Here are the main aspects of the code that follow the pep8 style 
 
-### Feature 3: [Feature name]
+- Indentation: The code uses 4 spaces per indentation level, which is consistent with PEP 8 recommendations.
 
-- [ ] Task 1 (Deadline: YYYY-MM-DD)
-- [ ] Task 2 (Deadline: YYYY-MM-DD)
-- ...
+- Naming conventions: Function and variable names are in lowercase with words separated by underscores, following the PEP 8 naming convention for functions and variables. For example: `check_loc_valid, selected_city, `and` error_msg.`
 
-## Code Style
+- Comments: The code includes descriptive comments and docstrings, which help explain the purpose and functionality of the code. This makes the code more readable and easier to understand.
 
-This project adheres to the [Code Style Guide Name](code_style_guide_link). Please follow the conventions outlined in the guide when contributing to the project.
+Some aspects of the code that do not follow the pep8 style such as the blocks of print statements in the `print_ui()` functions. 
 
+This is because the print statements are used to display information to the user, and it is more readable and to have all of the code for each print statment on one line.
 
-## References
-
-List all referenced sources with full attribution in this section.
-
-1. [Source 1 Name](source1_link)
-2. [Source 2 Name](source2_link)
-3. ...

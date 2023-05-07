@@ -345,7 +345,6 @@ timestamped filename.
     a string indicating whether the export was successful or not, and the path to the exported
     file. If there was an error fetching the data, the function returns an error message.
 """
-# Note this function dose not include error handling for if the API is down 
 def export_response(selected_city, call_type):
     time_now = datetime.now()
     time_stamp = time_now.strftime('%Y-%m-%d %H:%M:%S')
