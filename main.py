@@ -8,7 +8,7 @@ api_key_wapi_caleb = "3328658fef7c4737a1635629232204"
 # Ui functions
 # --------------------------
 """
-This is a set of functions that print different parts of a weather CLI interface in Python.
+This is a set of functions that prints different parts of a weather CLI interface in Python.
 
 :param selected_city: A string representing the currently selected city for weather information
 :param current_weather_response: It is a response object obtained from an API call to retrieve the
