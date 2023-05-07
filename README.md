@@ -9,6 +9,8 @@
     - [2. Export weather data](#2-export-weather-data)
     - [3. Select a new city](#3-select-a-new-city)
 - [Implementation Plan](#implementation-plan)
+    - [Trello board](#trello-board)
+    - [Trello card](#trello-card)
 - [Code Style](#code-style)
 
 ## Source Control Repository
@@ -69,13 +71,38 @@ The user can change the selected city at any time to display and export weather 
 
 # Implementation Plan
 
-Use this section to outline your implementation plan. You may use a table, a bulleted list or any other format that fits your needs. Include the following information for each feature:
+In this project, I used Trello as my project management platform to keep track of the main features and their respective tasks. Trello's card system allowed me to create a card for each feature and include checklists within the cards to ensure that all tasks are organized and easy to follow. Here's an outline of my implementation plan:
 
-1. Checklist of tasks
-2. Prioritization of features or tasks
-3. Deadline, duration or other time indicators
+**1. Display current weather conditions, forecast, and historical data**  
+    Checklist of tasks:
+  - Design a clear and user-friendly output format
+  - Create a function to parse and display current weather conditions
+  - Create a function to parse and display weather forecast data
+  - Create a function to parse and display historical weather data
+  - Test each function to ensure correct data display
 
-Provide screenshots or links to your project management platform where you are tracking your implementation plan.
+**2. Fetch weather data based on user's location or a specified city**   
+   Checklist of tasks:
+  - Register for an API key and research the API documentation
+  - Install the requests package
+  - Implement a function to fetch weather data using the API and user's
+  - location or specified city
+  - Test the function to ensure accurate weather data retrieval
+
+**3. Export historical and/or predicted data to a file**  
+    Checklist of tasks:
+  - Determine the file format for export (e.g., CSV, JSON)
+  - Implement a function to export the data to the chosen file format
+  - Add a command-line option to trigger the export feature
+  - Test the export functionality with different data sets
+  - Document the export feature in the user guide
+
+I've provided screenshots of the Trello board and a card, illustrating how the implementation plan was organized and tracked using Trello.
+
+### Trello board
+![trello board](/README-images/trello1.png)
+### Trello card
+![trello board](/README-images/trello2.png)
 
 
 # Code Style
