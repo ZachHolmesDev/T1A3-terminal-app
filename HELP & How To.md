@@ -40,9 +40,9 @@ These dependencies will be installed automatically to the virtual enviroment whe
       .
       ├── EXPORTS
       ├── HELP & How To.md
+      ├── README-images
       ├── README.md
       ├── Tests
-      │   └── test_T1A3_Weather_CLI.py
       ├── main.py
       ├── requirements.txt
       └── run.sh
